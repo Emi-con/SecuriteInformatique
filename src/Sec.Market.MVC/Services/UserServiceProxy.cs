@@ -32,8 +32,8 @@ namespace Sec.Market.MVC.Services
 
         public async Task<User?> Obtenir(string email, string pwd)
         {
-            var parametre = new { email = email, pwd = pwd };
-            var jsonContent = JsonContent.Create(parametre);
+            var parametre = new { Email = email, Password = pwd };
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(parametre), Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync(_userApiUrl + "GetUser", jsonContent);
 
