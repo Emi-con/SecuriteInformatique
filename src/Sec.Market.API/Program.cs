@@ -11,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<MarketContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Enregistrer le service de protection de données
+builder.Services.AddDataProtection();
+
 builder.Services.AddScoped<PasswordService>();
 
 builder.Services.AddScoped<IPaiementService, PaiementService>();

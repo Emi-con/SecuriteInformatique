@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -55,7 +56,7 @@ namespace Sec.Market.API.Controllers
             {
                 return BadRequest("Les informations d'identification sont invalides.");
             }
-
+           
             var user = await _userRepository.GetUserByEmail(model.Email);
 
             if (user == null)

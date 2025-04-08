@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Models;
@@ -8,10 +9,11 @@ namespace Sec.Market.MVC.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
-
-        public UserController(IUserService userService)
+        private readonly IDataProtector _dataProtector;
+        public UserController(IUserService userService, IDataProtectionProvider dataProtectionProvider)
         {
             _userService = userService;
+            _dataProtector = dataProtectionProvider.CreateProtector("EmailProtector");
         }
 
         // GET: UserController
@@ -32,7 +34,9 @@ namespace Sec.Market.MVC.Controllers
         [HttpPost]
         public async Task<ActionResult> SignIn(UserToLogin userToLogin, string? returnurl)
         {
-            var user = await _userService.Obtenir(userToLogin.UserName, userToLogin.Password);
+            //Chiffrer l'email avant de l'envoyer
+            string encryptedEmail = _dataProtector.Protect(userToLogin.UserName);  // Chiffrement de l'email
+            var user = await _userService.Obtenir(encryptedEmail, userToLogin.Password);
 
             if (user == null)
                 ModelState.AddModelError("Erreur", "Email ou mot de passe incorrect");
