@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Sec.Market.API.Data;
 using Sec.Market.API.Entites;
 using Sec.Market.API.Interfaces;
+using Sec.Market.API.Services;
 
 namespace Sec.Market.API.Controllers
 {
@@ -17,10 +18,12 @@ namespace Sec.Market.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly PasswordService _passwordService;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserRepository userRepository, PasswordService passwordService)
         {
             _userRepository = userRepository;
+            _passwordService = passwordService;
         }
 
         // GET: api/Users
@@ -45,6 +48,28 @@ namespace Sec.Market.API.Controllers
         //    return user;
         //}
 
+        [HttpPost("GetUser")]
+        public async Task<ActionResult<User>> GetUser([FromBody] UserLoginModel model)
+        {
+            if (model == null || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+            {
+                return BadRequest("Les informations d'identification sont invalides.");
+            }
+
+            var user = await _userRepository.GetUserByEmail(model.Email);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            // Vérification du mot de passe
+            if (!_passwordService.VerifyPassword(user, model.Password))
+            {
+                return BadRequest("Mot de passe incorrect.");
+            }
+
+            return user;
+        }
 
         [HttpGet("GetUser")]
         public async Task<ActionResult<User>> GetUser(string email, string pwd)
@@ -68,8 +93,23 @@ namespace Sec.Market.API.Controllers
             {
                 return BadRequest();
             }
+            var existingUser = await _userRepository.GetUserById(id);
+            if (existingUser == null)
+            {
+                return NotFound("Utilisateur non trouvé.");
+            }
 
-           await _userRepository.UpdateUser(user);
+            // Si un nouveau mot de passe est fourni, hachez-le avant de l'enregistrer
+            if (!string.IsNullOrEmpty(user.Password) && user.Password != existingUser.Password)
+            {
+                user.Password = _passwordService.HashPassword(user); // Hachage du nouveau mot de passe
+            }
+            else
+            {
+                // Si le mot de passe n'est pas fourni, vous pouvez conserver l'ancien mot de passe.
+                user.Password = existingUser.Password;
+            }
+            await _userRepository.UpdateUser(user);
 
             return NoContent();
         }
@@ -79,7 +119,15 @@ namespace Sec.Market.API.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-         
+            // Vérifier si l'email existe déjà
+            var existingUser = await _userRepository.GetUserByEmail(user.Email);
+            if (existingUser != null)
+            {
+                return BadRequest("Un utilisateur avec cet email existe déjà.");
+            }
+
+            // Hachage du mot de passe avant d'enregistrer l'utilisateur
+            user.Password = _passwordService.HashPassword(user);
             await _userRepository.InsertUser(user);
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);

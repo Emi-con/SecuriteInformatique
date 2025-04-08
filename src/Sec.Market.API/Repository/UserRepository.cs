@@ -18,16 +18,22 @@ namespace Sec.Market.API.Repository
             _context.Users.Remove(user);
             return _context.SaveChangesAsync();
         }
-
+        public Task<User?> GetUserByEmail(string email)
+        {
+            return _context.Users.FromSqlInterpolated(
+            $"SELECT * FROM Users WHERE Email = {email}")
+                .SingleOrDefaultAsync();
+        }
         public Task<User?> GetUserByEmailAndPwd(string email, string pwd)
         {
-            return _context.Users.FromSqlRaw("SELECT * FROM Users WHERE Email = '" + email + "' AND Password = '" + pwd + "'")
+            return _context.Users.FromSqlInterpolated(
+            $"SELECT * FROM Users WHERE Email = {email} AND Password = {pwd}")
                 .SingleOrDefaultAsync();
         }
 
         public Task<User?> GetUserById(int userId)
         {
-            return _context.Users.FromSqlRaw("SELECT * FROM Users WHERE Id = " + userId)
+            return _context.Users.FromSqlInterpolated($"SELECT * FROM Users WHERE Id = {userId}")
                 .SingleOrDefaultAsync();
         }
 

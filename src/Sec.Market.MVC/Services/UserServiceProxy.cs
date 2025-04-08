@@ -32,21 +32,15 @@ namespace Sec.Market.MVC.Services
 
         public async Task<User?> Obtenir(string email, string pwd)
         {
-            var queryParameters = new Dictionary<string, string>
-                  {
-                    { "email", email },
-                    { "pwd", pwd}
-                };
-            var dictFormUrlEncoded = new FormUrlEncodedContent(queryParameters);
+            var parametre = new { email = email, pwd = pwd };
+            var jsonContent = JsonContent.Create(parametre);
 
-            var queryString = await dictFormUrlEncoded.ReadAsStringAsync();
-
-            var response = await _httpClient.GetAsync(_userApiUrl + "GetUser?" + queryString);
+            var response = await _httpClient.PostAsync(_userApiUrl + "GetUser", jsonContent);
 
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<User>();
-              else
-                  return null;
+            else
+                return null;
         }
 
         public async Task<List<User>> ObtenirTout()
