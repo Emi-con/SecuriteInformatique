@@ -16,14 +16,14 @@ namespace Sec.Market.MVC.Controllers
         public HomeController(ILogger<HomeController> logger, IDownstreamApi downstreamApi)
         {
             _logger = logger;
-            _downstreamApi = downstreamApi;;
+            _downstreamApi = downstreamApi; ;
         }
 
         [AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
         public async Task<IActionResult> Index()
         {
-using var response = await _downstreamApi.CallApiForUserAsync("DownstreamApi").ConfigureAwait(false);
-if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            using var response = await _downstreamApi.CallApiForUserAsync("DownstreamApi").ConfigureAwait(false);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var apiResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 ViewData["ApiResult"] = apiResult;
@@ -32,7 +32,8 @@ if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var error = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 throw new HttpRequestException($"Invalid status code in the HttpResponseMessage: {response.StatusCode}: {error}");
-            };
+            }
+            ;
             return View();
         }
 

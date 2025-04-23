@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Models;
@@ -14,7 +16,7 @@ namespace Sec.Market.MVC.Controllers
         {
             _productService = productService;
         }
-
+        
         [HttpGet]
         // GET: ProductController
         public async Task<IActionResult> Index()
@@ -34,7 +36,7 @@ namespace Sec.Market.MVC.Controllers
             
             return View(ca);
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Liste()
         {
             return View(await _productService.ObtenirSelonFiltre(null));

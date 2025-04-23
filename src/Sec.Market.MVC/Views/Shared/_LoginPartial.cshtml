@@ -1,13 +1,14 @@
 ﻿@inject IHttpContextAccessor HttpContextAccessor
 
 
-@if (HttpContextAccessor.HttpContext.Session.GetString("name") != null)
+@if (User.Identity.IsAuthenticated)
+
 {
     <section class="col-lg-4 col-md-5 col-xs-12">
         <div class="esh-identity">
             <div class="navbar-right">
                 <section class="esh-identity-section">
-                    <div class="esh-identity-name">@HttpContextAccessor.HttpContext.Session.GetString("name")</div>
+                    <div class="esh-identity-name">@User.Identity.Name</div>
                     <img class="esh-identity-image" src="~/images/arrow-down.png">
                 </section>
 
