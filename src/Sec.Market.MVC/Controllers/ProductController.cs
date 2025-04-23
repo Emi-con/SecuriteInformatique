@@ -48,7 +48,7 @@ namespace Sec.Market.MVC.Controllers
         {
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: ProductController/Create
         [HttpPost]
         public async Task<ActionResult> Create(Product product)
@@ -60,7 +60,7 @@ namespace Sec.Market.MVC.Controllers
             }
             return View(product);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: ProductController/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
@@ -72,7 +72,7 @@ namespace Sec.Market.MVC.Controllers
             var product = await _productService.Obtenir(id.Value);
             return View(product);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: ProductController/Edit/5
         [HttpPost]
         public async Task<ActionResult> Edit(Product product)
@@ -96,7 +96,7 @@ namespace Sec.Market.MVC.Controllers
             var product = await _productService.Obtenir(id.Value);
             return View(product);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: ProductController/Delete/5
         [HttpPost]
         public async Task<ActionResult> Delete(Product product)
