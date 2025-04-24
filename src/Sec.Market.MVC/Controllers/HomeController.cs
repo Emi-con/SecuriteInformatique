@@ -7,7 +7,6 @@ using Microsoft.Identity.Abstractions;
 
 namespace Sec.Market.MVC.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly IDownstreamApi _downstreamApi;

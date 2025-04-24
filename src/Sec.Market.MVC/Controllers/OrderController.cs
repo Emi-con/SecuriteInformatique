@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.Extensions;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Models;
+using Microsoft.Identity.Web;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Sec.Market.MVC.Controllers
 {
+    [Authorize]
+    [AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
     public class OrderController : Controller
     {
         private readonly IOrderService _orderService;
@@ -79,8 +83,7 @@ namespace Sec.Market.MVC.Controllers
         }
 
         // POST: OrderController/Edit/5
-        [HttpPost]
-       
+        [HttpPost]       
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -100,8 +103,7 @@ namespace Sec.Market.MVC.Controllers
         }
 
         // POST: OrderController/Delete/5
-        [HttpPost]
-       
+        [HttpPost]       
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
