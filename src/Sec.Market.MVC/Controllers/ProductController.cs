@@ -30,7 +30,6 @@ namespace Sec.Market.MVC.Controllers
             return View(catalog);
         }
 
-        //[AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Index(CatalogModelView ca)

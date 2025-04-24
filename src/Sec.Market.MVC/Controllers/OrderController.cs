@@ -69,13 +69,13 @@ namespace Sec.Market.MVC.Controllers
 
             if (ModelState.IsValid)
             {
-                
-              await _orderService.Ajouter(orderData);
-              return RedirectToAction(nameof(Index));
+
+                await _orderService.Ajouter(orderData);
+                return RedirectToAction(nameof(Index));
             }
-           
+
             return View(orderData);
-            
+
         }
 
         // GET: OrderController/Edit/5
@@ -85,7 +85,7 @@ namespace Sec.Market.MVC.Controllers
         }
 
         // POST: OrderController/Edit/5
-        [HttpPost]       
+        [HttpPost]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -105,7 +105,7 @@ namespace Sec.Market.MVC.Controllers
         }
 
         // POST: OrderController/Delete/5
-        [HttpPost]       
+        [HttpPost]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try

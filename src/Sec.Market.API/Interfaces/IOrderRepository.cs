@@ -12,6 +12,6 @@ namespace Sec.Market.API.Interfaces
         
        public Task DeleteOrder(Order order);
        public Task UpdateOrder(Order order);
-      
+
     }
 }

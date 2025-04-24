@@ -16,25 +16,25 @@
                 <section class="esh-identity-drop">
 
                     <a class="esh-identity-item"
-                       asp-controller="Order"
-                       asp-action="Index">
+                    asp-controller="Order"
+                    asp-action="Index">
 
                         <div class="esh-identity-name esh-identity-name--upper">Commandes</div>
                     </a>
 
                     @if(HttpContextAccessor.HttpContext.Session.GetString("role")=="Admin")
                     {
-                    <a class="esh-identity-item"
-                       asp-controller="Product"
-                       asp-action="Liste">
+                        <a class="esh-identity-item"
+                        asp-controller="Product"
+                        asp-action="Liste">
 
-                        <div class="esh-identity-name esh-identity-name--upper">Produits</div>
-                    </a>
+                            <div class="esh-identity-name esh-identity-name--upper">Produits</div>
+                        </a>
                     }
 
                     <a class="esh-identity-item"
-                       asp-controller="User"
-                       asp-action="LogOut">
+                    asp-controller="User"
+                    asp-action="LogOut">
 
                         <div class="esh-identity-name esh-identity-name--upper">Deconnexion</div>
                     </a>
@@ -65,3 +65,4 @@ else
 
     </section>
 }
+<div>@User.FindFirstValue(ClaimTypes.NameIdentifier)</div>

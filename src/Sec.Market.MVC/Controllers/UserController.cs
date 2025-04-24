@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Sec.Market.MVC.Controllers
 {
@@ -57,11 +58,13 @@ namespace Sec.Market.MVC.Controllers
 
         public  ActionResult LogOut()
         {
-            return SignOut(new AuthenticationProperties { RedirectUri = Url.Action("Index", "Product") },
-                OpenIdConnectDefaults.AuthenticationScheme);
+            var redirectUrl = Url.Action("Index", "Product", null, Request.Scheme);
+            return SignOut(
+                new AuthenticationProperties { RedirectUri = redirectUrl },
+                OpenIdConnectDefaults.AuthenticationScheme,
+                CookieAuthenticationDefaults.AuthenticationScheme
+            );
         }
-
-
 
         // GET: UserController/Details/5
         public ActionResult Details(int id)
