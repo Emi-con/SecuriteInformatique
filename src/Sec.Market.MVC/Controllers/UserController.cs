@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Models;
@@ -55,9 +57,8 @@ namespace Sec.Market.MVC.Controllers
 
         public  ActionResult LogOut()
         {
-            HttpContext.Session.Clear();
-
-            return RedirectToAction("Index", "Product");
+            return SignOut(new AuthenticationProperties { RedirectUri = Url.Action("Index", "Product") },
+                OpenIdConnectDefaults.AuthenticationScheme);
         }
 
 
