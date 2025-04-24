@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Models;
 
@@ -9,14 +10,14 @@ namespace Sec.Market.MVC.Controllers
 {
     public class ProductController : Controller
     {
-
         private readonly IProductService _productService;
 
         public ProductController(IProductService productService)
         {
             _productService = productService;
         }
-        
+
+        [AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
         [HttpGet]
         // GET: ProductController
         public async Task<IActionResult> Index()
@@ -28,6 +29,7 @@ namespace Sec.Market.MVC.Controllers
             return View(catalog);
         }
 
+        [AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
         [HttpPost]
         public async Task<IActionResult> Index(CatalogModelView ca)
         {
@@ -36,20 +38,22 @@ namespace Sec.Market.MVC.Controllers
             
             return View(ca);
         }
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Liste()
         {
             return View(await _productService.ObtenirSelonFiltre(null));
         }
 
-
         // GET: ProductController/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
         }
-        [Authorize(Roles = "Admin")]
+        
         // POST: ProductController/Create
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> Create(Product product)
         {
@@ -60,8 +64,9 @@ namespace Sec.Market.MVC.Controllers
             }
             return View(product);
         }
-        [Authorize(Roles = "Admin")]
+        
         // GET: ProductController/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,9 +77,10 @@ namespace Sec.Market.MVC.Controllers
             var product = await _productService.Obtenir(id.Value);
             return View(product);
         }
-        [Authorize(Roles = "Admin")]
+        
         // POST: ProductController/Edit/5
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(Product product)
         {
             if (ModelState.IsValid)
@@ -86,6 +92,7 @@ namespace Sec.Market.MVC.Controllers
         }
 
         // GET: ProductController/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -96,15 +103,15 @@ namespace Sec.Market.MVC.Controllers
             var product = await _productService.Obtenir(id.Value);
             return View(product);
         }
-        [Authorize(Roles = "Admin")]
+
         // POST: ProductController/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> Delete(Product product)
         {
 
             await _productService.Supprimer(product.Id);
             return RedirectToAction(nameof(Liste));
-        }
-           
+        }           
     }
 }
