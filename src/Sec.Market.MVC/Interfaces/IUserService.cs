@@ -12,6 +12,5 @@ namespace Sec.Market.MVC.Interfaces
 
         Task Ajouter(User user);
 
-   
     }
 }

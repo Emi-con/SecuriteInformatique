@@ -102,6 +102,5 @@ namespace Sec.Market.API.Controllers
             return NoContent();
         }
 
-       
     }
 }

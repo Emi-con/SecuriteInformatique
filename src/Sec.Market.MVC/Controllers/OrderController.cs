@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.Extensions;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Sec.Market.MVC.Controllers
 {
@@ -15,17 +17,17 @@ namespace Sec.Market.MVC.Controllers
         public OrderController(IOrderService orderService, IProductService productService)
         {
             _orderService = orderService;
-
             _productService = productService;
         }
 
+        [Authorize]
         // GET: OrderController
         public async Task<ActionResult> Index()
         {
             var userId = HttpContext.Session.GetInt32("id");
 
             if (userId == null)
-                return RedirectToAction("SignIn", "User", new { returnurl = HttpContext.Request.GetDisplayUrl()});
+                return RedirectToAction("SignIn", "User", new { returnurl = HttpContext.Request.GetDisplayUrl() });
 
             return View(await _orderService.ObtenirSelonUser(userId.Value));
         }
@@ -35,7 +37,7 @@ namespace Sec.Market.MVC.Controllers
         {
             return View();
         }
-
+        [Authorize]
         // GET: OrderController/Create
         public async Task<ActionResult> Create(int id)
         {
@@ -55,7 +57,7 @@ namespace Sec.Market.MVC.Controllers
 
             return View(orderData);
         }
-
+        [Authorize]
         // POST: OrderController/Create
         [HttpPost]
         public async Task<ActionResult> Create(OrderData orderData)
