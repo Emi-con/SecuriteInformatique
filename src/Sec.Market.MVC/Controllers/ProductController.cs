@@ -17,7 +17,8 @@ namespace Sec.Market.MVC.Controllers
             _productService = productService;
         }
 
-        [AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
+        //[AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
+        [AllowAnonymous]
         [HttpGet]
         // GET: ProductController
         public async Task<IActionResult> Index()
@@ -29,7 +30,8 @@ namespace Sec.Market.MVC.Controllers
             return View(catalog);
         }
 
-        [AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
+        //[AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Index(CatalogModelView ca)
         {

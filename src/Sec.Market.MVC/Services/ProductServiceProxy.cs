@@ -46,7 +46,6 @@ namespace Sec.Market.MVC.Services
 
         public async Task<List<Product>> ObtenirSelonFiltre(string? filtre)
         {
-            await PrepareAuthenticatedClient();
             return await _httpClient.GetFromJsonAsync<List<Product>>(_produitApiUrl + "?filter=" + filtre);
         }
 
