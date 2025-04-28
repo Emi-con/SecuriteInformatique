@@ -28,12 +28,8 @@ namespace Sec.Market.MVC.Controllers
         // GET: OrderController
         public async Task<ActionResult> Index()
         {
-            var userId = HttpContext.Session.GetInt32("id");
-
-            if (userId == null)
-                return RedirectToAction("SignIn", "User", new { returnurl = HttpContext.Request.GetDisplayUrl() });
-
-            return View(await _orderService.ObtenirSelonUser(userId.Value));
+            var orders = await _orderService.ObtenirSelonUser();
+            return View(orders);
         }
 
         // GET: OrderController/Details/5

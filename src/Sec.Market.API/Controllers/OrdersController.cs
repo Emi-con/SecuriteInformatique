@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Sec.Market.API.Data;
 using Sec.Market.API.Entites;
 using Sec.Market.API.Interfaces;
+using Sec.Market.API.Repository;
 
 namespace Sec.Market.API.Controllers
 {
@@ -30,12 +32,32 @@ namespace Sec.Market.API.Controllers
             _paiementService = paiementService;
         }
 
-        // GET: api/Orders
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders(int userId)
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetMyOrders()
         {
-            return await _OrderRepository.GetOrdersByUser(userId);
+            // Utilise le claim
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            //var orders = await _OrderRepository.GetOrdersByUser(userId);
+            //return Ok(orders);
+            return Ok();
         }
+
+        //// GET: api/Orders
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Order>>> GetOrders([FromQuery] int userId)
+        //{
+        //    if (string.IsNullOrWhiteSpace(userId))
+        //        return BadRequest();
+
+        //    var orders = await _OrderRepository.GetOrdersByUser(userId);
+
+        //    return Ok(orders);
+        //}
 
         // GET: api/Orders/5
         [HttpGet("{id}")]

@@ -38,11 +38,12 @@ namespace Sec.Market.MVC.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<Order>> ObtenirSelonUser(int userId)
+        public async Task<List<Order>> ObtenirSelonUser()
         {
             await PrepareAuthenticatedClient();
 
-            return await _httpClient.GetFromJsonAsync<List<Order>>(_orderApiUrl + "?userId=" + userId);
+            return await _httpClient.GetFromJsonAsync<List<Order>>(_orderApiUrl + "me");
+            //return await _httpClient.GetFromJsonAsync<List<Order>>(_orderApiUrl + "?userId=" + userId);
         }
 
         public async Task Supprimer(int id)

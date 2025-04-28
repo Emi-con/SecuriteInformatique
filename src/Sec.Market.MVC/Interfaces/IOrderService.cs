@@ -4,7 +4,7 @@ namespace Sec.Market.MVC.Interfaces
 {
     public interface IOrderService
     {
-        Task<List<Order>> ObtenirSelonUser(int userId);
+        Task<List<Order>> ObtenirSelonUser();
 
         Task<Order> Obtenir(int id);
 

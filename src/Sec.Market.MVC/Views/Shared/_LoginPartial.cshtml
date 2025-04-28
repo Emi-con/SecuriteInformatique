@@ -33,8 +33,9 @@
                     }
 
                     <a class="esh-identity-item"
-                    asp-controller="User"
-                    asp-action="LogOut">
+                       asp-area="MicrosoftIdentity"
+                       asp-controller="Account"
+                       asp-action="SignOut">
 
                         <div class="esh-identity-name esh-identity-name--upper">Deconnexion</div>
                     </a>
@@ -52,8 +53,7 @@ else
         <div class="esh-identity">
             <section class="esh-identity-section">
                 <div class="esh-identity-item">
-
-                    <a asp-area="" asp-controller="User" asp-action="SignIn" class="esh-identity-name esh-identity-name--upper">
+                    <a asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn" class="esh-identity-name esh-identity-name--upper">
                         Login
                     </a>
                 </div>
@@ -65,4 +65,3 @@ else
 
     </section>
 }
-<div>@User.FindFirstValue(ClaimTypes.NameIdentifier)</div>
