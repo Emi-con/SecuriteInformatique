@@ -50,6 +50,8 @@
     </dl>
     
     <form asp-action="Delete">
+        @Html.AntiForgeryToken()
+
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Liste">Retour à  la liste</a>
     </form>

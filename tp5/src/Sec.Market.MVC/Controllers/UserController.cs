@@ -30,6 +30,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: UserController/SignOut
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> SignIn(UserToLogin userToLogin, string? returnurl)
         {
             var user = await _userService.Obtenir(userToLogin.UserName, userToLogin.Password);
@@ -43,11 +44,10 @@ namespace Sec.Market.MVC.Controllers
                 HttpContext.Session.SetString("email", user.Email);
                 HttpContext.Session.SetString("role", user.Role);
 
-                if (returnurl == null)
-                    return RedirectToAction("Index", "Product");
+                if (!string.IsNullOrEmpty(returnurl) && Url.IsLocalUrl(returnurl))
+                    return Redirect(returnurl);
                 else
-                  return Redirect(returnurl);
-
+                    return RedirectToAction("Index", "Product");
             }
 
             return View();
@@ -59,8 +59,6 @@ namespace Sec.Market.MVC.Controllers
 
             return RedirectToAction("Index", "Product");
         }
-
-
 
         // GET: UserController/Details/5
         public ActionResult Details(int id)
@@ -76,7 +74,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: UserController/Create
         [HttpPost]
-    
+        [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
             try
@@ -97,7 +95,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: UserController/Edit/5
         [HttpPost]
-        
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -118,7 +116,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: UserController/Delete/5
         [HttpPost]
-      
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try

@@ -27,6 +27,7 @@ namespace Sec.Market.MVC.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(CatalogModelView ca)
         {
 
@@ -49,6 +50,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: ProductController/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Product product)
         {
             if (ModelState.IsValid)
@@ -73,6 +75,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: ProductController/Edit/5
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(Product product)
         {
             if (ModelState.IsValid)
@@ -97,6 +100,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: ProductController/Delete/5
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(Product product)
         {
 

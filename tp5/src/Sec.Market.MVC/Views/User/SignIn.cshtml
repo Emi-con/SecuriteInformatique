@@ -11,6 +11,8 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="SignIn" asp-route-returnurl="@ViewBag.ReturnUrl">
+            @Html.AntiForgeryToken()
+
              <div class="row">
                 @foreach (var error in ViewData.ModelState.Values.SelectMany(err => err.Errors))
                 {

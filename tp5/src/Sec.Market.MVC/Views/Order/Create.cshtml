@@ -6,6 +6,7 @@
 
 <div class="container">
     <form method="post" asp-controller="Order" asp-action="Create">
+        @Html.AntiForgeryToken()
         <section class="esh-orders_new-section">
             <div class="row">
                 @foreach (var error in ViewData.ModelState.Values.SelectMany(err => err.Errors))

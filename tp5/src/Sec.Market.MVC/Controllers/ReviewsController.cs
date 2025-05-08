@@ -36,6 +36,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: ReviewsController/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CustomerReview customerReview)
         {
               if (ModelState.IsValid)
@@ -56,7 +57,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: ReviewsController/Edit/5
         [HttpPost]
-       
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -77,7 +78,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: ReviewsController/Delete/5
         [HttpPost]
-        
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try

@@ -58,6 +58,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: OrderController/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(OrderData orderData)
         {
 
@@ -80,7 +81,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: OrderController/Edit/5
         [HttpPost]
-       
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -101,7 +102,7 @@ namespace Sec.Market.MVC.Controllers
 
         // POST: OrderController/Delete/5
         [HttpPost]
-       
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
