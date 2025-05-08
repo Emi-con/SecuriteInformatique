@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Services;
 
@@ -23,7 +24,8 @@ builder.Services.AddControllersWithViews(
         options.Filters.Add(new AuthorizeFilter(policy));
 
     });
-
+builder.Services.AddRazorPages()
+    .AddMicrosoftIdentityUI();
 builder.Services.AddHttpClient<IProductService, ProductServiceProxy>(client => client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UrlApi")));
 builder.Services.AddHttpClient<IUserService, UserServiceProxy>(client => client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UrlApi")));
 builder.Services.AddHttpClient<IOrderService, OrderServiceProxy>(client => client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UrlApi")));
