@@ -1,8 +1,13 @@
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Identity.Web;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuration d'Azure AD à partir de la configuration
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
 
 // Add services to the container.
