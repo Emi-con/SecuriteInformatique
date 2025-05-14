@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Models;
 
@@ -7,8 +9,8 @@ namespace Sec.Market.MVC.Controllers
 {
     public class ProductController : Controller
     {
-
         private readonly IProductService _productService;
+
 
         public ProductController(IProductService productService)
         {

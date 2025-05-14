@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using Sec.Market.MVC.Handlers;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Services;
 
@@ -13,23 +14,41 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
-
 // Add services to the container.
-builder.Services.AddControllersWithViews(
-    options =>
-    {
-        var policy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
-        options.Filters.Add(new AuthorizeFilter(policy));
+builder.Services.AddControllersWithViews(options =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+});
 
-    });
-builder.Services.AddRazorPages()
-    .AddMicrosoftIdentityUI();
-builder.Services.AddHttpClient<IProductService, ProductServiceProxy>(client => client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UrlApi")));
-builder.Services.AddHttpClient<IUserService, UserServiceProxy>(client => client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UrlApi")));
-builder.Services.AddHttpClient<IOrderService, OrderServiceProxy>(client => client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UrlApi")));
-builder.Services.AddHttpClient<ICustomerReviewService, CustomerReviewServiceProxy>(client => client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UrlApi")));
+builder.Services.AddRazorPages().AddMicrosoftIdentityUI();
+
+builder.Services.AddSingleton<TokenService>();
+builder.Services.AddTransient<BearerTokenHandler>();
+
+var apiBaseUrl = new Uri(builder.Configuration["ApiSettings:BaseUrl"]);
+
+builder.Services.AddHttpClient<IProductService, ProductServiceProxy>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<IUserService, UserServiceProxy>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<IOrderService, OrderServiceProxy>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<ICustomerReviewService, CustomerReviewServiceProxy>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+}).AddHttpMessageHandler<BearerTokenHandler>();
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -53,6 +72,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();

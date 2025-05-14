@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Identity.Abstractions;
+using Microsoft.Identity.Web;
+using Newtonsoft.Json;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Models;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Sec.Market.MVC.Services
@@ -8,8 +11,7 @@ namespace Sec.Market.MVC.Services
     public class ProductServiceProxy : IProductService
     {
         private readonly HttpClient _httpClient;
-
-        private const string _produitApiUrl = "api/products/";
+        private readonly string _produitApiUrl = "api/products/";
 
         public ProductServiceProxy(HttpClient httpClient)
         {
@@ -37,7 +39,6 @@ namespace Sec.Market.MVC.Services
 
         public async Task<List<Product>> ObtenirSelonFiltre(string? filtre)
         {
-
             return await _httpClient.GetFromJsonAsync<List<Product>>(_produitApiUrl + "?filter=" + filtre);
         }
 
