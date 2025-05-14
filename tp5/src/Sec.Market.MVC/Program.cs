@@ -7,12 +7,18 @@ using Microsoft.Identity.Web.UI;
 using Sec.Market.MVC.Handlers;
 using Sec.Market.MVC.Interfaces;
 using Sec.Market.MVC.Services;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuration d'Azure AD à partir de la configuration
+var initialScopes = builder.Configuration["DownstreamApi:Scopes"]?.Split(' ') ?? builder.Configuration["MicrosoftGraph:Scopes"]?.Split(' ');
+
+// Configuration d'Azure AD ï¿½ partir de la configuration
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+        .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+            .AddDownstreamApi("DownstreamApi",builder.Configuration.GetSection("DownstreamApi"))
+            .AddInMemoryTokenCaches();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews(options =>
@@ -80,5 +86,6 @@ app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Product}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 app.Run();

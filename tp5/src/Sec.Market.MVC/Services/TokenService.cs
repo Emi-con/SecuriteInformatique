@@ -19,7 +19,7 @@ namespace Sec.Market.MVC.Services
             var clientId = _config["AzureAd:ClientId"];
             var clientSecret = _config["AzureAd:ClientSecret"];
             var tenantId = _config["AzureAd:TenantId"];
-            var scope = "api://c70d2a77-df7a-401f-b800-a7378c14c942/.default";
+            var scope = "api://fbb85a29-8a6e-47bb-92bb-084c9afedf24/.default";
 
             //var scope = _config["AzureAd:ApiTokenScope"]; // ex: api://xxx/.default
 
