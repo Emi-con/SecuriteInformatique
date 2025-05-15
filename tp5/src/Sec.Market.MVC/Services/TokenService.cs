@@ -34,6 +34,11 @@ namespace Sec.Market.MVC.Services
         });
 
             var response = await _httpClient.PostAsync(tokenEndpoint, content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("Token error response:");
+            Console.WriteLine(responseContent);
+
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadFromJsonAsync<JsonElement>();
