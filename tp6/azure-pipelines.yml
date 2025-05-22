@@ -10,13 +10,15 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: NodeTool@0
+- checkout: self
+  fetchDepth: 0
+
+- task: SonarCloudPrepare@3
   inputs:
-    versionSpec: '20.x'
-  displayName: 'Install Node.js'
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+    SonarQube: 'sc-sonarcloud'
+    organization: 'a24-infonuagique-2398325'
+    scannerMode: 'dotnet'
+    projectKey: 'A24-Infonuagique-2398325_Market-TP6'
+    projectName: 'Market-TP6'
 
 
